@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="ROT13 Cipher — Interactive encryption and decryption demonstration for Data Security and Cryptography." />
+  <title>ROT13 Cipher | Data Security &amp; Cryptography</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ===== Navigation ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">🔐 ROT13 Cipher</div>
+    <ul class="nav-links">
+      <li><a href="#encoder">Encoder</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="#mapping">Mapping</a></li>
+      <li><a href="#tests">Tests</a></li>
+      <li><a href="#learn">Learn</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ===== Hero Section ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-particles" id="heroParticles"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Data Security &amp; Cryptography</div>
+      <h1 class="hero-title">ROT13 Cipher</h1>
+      <p class="hero-subtitle">
+        Explore the fundamentals of classical cryptography through interactive encryption and decryption.
+      </p>
+      <div class="hero-formula">
+        <span class="formula-label">Encryption Formula</span>
+        <span class="formula-text">E(x) = (x + 13) mod 26</span>
+      </div>
+      <a href="#encoder" class="hero-cta">Try It Now ↓</a>
+    </div>
+  </header>
+
+  <!-- ===== Encoder / Decoder Section ===== -->
+  <section class="section" id="encoder">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Encrypt &amp; Decrypt</h2>
+        <p class="section-desc">Enter any text below to see ROT13 in action. The same operation encrypts <em>and</em>
+          decrypts.</p>
+      </div>
+
+      <div class="encoder-grid">
+        <!-- Input Card -->
+        <div class="card card-input">
+          <div class="card-header">
+            <h3>Input</h3>
+            <span class="char-counter" id="charCounter">11 characters</span>
+          </div>
+          <label for="inputText" class="sr-only">Enter plaintext or ciphertext</label>
+          <textarea id="inputText" class="text-area" rows="5" placeholder="Type your message here…"
+            aria-label="Input text for ROT13 transformation">HELLO WORLD</textarea>
+          <div class="input-actions">
+            <button class="btn btn-outline" id="clearBtn" aria-label="Clear input text">
+              <span class="btn-icon">✕</span> Clear
+            </button>
+            <button class="btn btn-primary" id="encryptBtn" aria-label="Encrypt text with ROT13">
+              <span class="btn-icon">🔒</span> Encrypt with ROT13
+            </button>
+            <button class="btn btn-accent" id="decryptBtn" aria-label="Decrypt text with ROT13">
+              <span class="btn-icon">🔓</span> Decrypt with ROT13
+            </button>
+          </div>
+        </div>
+
+        <!-- Arrow -->
+        <div class="arrow-connector">
+          <div class="arrow-line"></div>
+          <div class="arrow-label">ROT13</div>
+          <div class="arrow-line"></div>
+        </div>
+
+        <!-- Output Card -->
+        <div class="card card-output">
+          <div class="card-header">
+            <h3>Output</h3>
+            <button class="btn btn-sm btn-copy" id="copyBtn" aria-label="Copy output to clipboard">
+              <span class="btn-icon">📋</span> Copy
+            </button>
+          </div>
+          <div class="output-box" id="outputText" aria-live="polite" role="status">URYYB JBEYQ</div>
+        </div>
+      </div>
+
+      <!-- Toast notification -->
+      <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+    </div>
+  </section>
+
+  <!-- ===== Letter-by-Letter Demonstration ===== -->
+  <section class="section section-alt" id="demo">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Letter-by-Letter Demonstration</h2>
+        <p class="section-desc">See exactly how each character is transformed during the ROT13 process.</p>
+      </div>
+
+      <div class="card">
+        <div class="demo-controls">
+          <button class="btn btn-primary" id="demoBtn" aria-label="Generate step-by-step demonstration">
+            <span class="btn-icon">📊</span> Generate Demonstration
+          </button>
+        </div>
+        <div class="table-wrap" id="demoTableWrap">
+          <table class="demo-table" id="demoTable" aria-label="Character-by-character ROT13 breakdown">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Original</th>
+                <th>Position</th>
+                <th>Shift</th>
+                <th>New Position</th>
+                <th>Result</th>
+              </tr>
+            </thead>
+            <tbody id="demoBody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+        <p class="demo-note" id="demoNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Alphabet Mapping ===== -->
+  <section class="section" id="mapping">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Interactive Alphabet Mapping</h2>
+        <p class="section-desc">Hover over any letter to see its ROT13 pair. Each letter shifts exactly <strong>13
+            positions</strong> forward in the alphabet.</p>
+      </div>
+
+      <div class="card mapping-card">
+        <div class="mapping-row">
+          <span class="mapping-label">Plain</span>
+          <div class="mapping-letters" id="plainRow" aria-label="Plain alphabet letters"></div>
+        </div>
+        <div class="mapping-arrows" id="mappingArrows">
+          <span>↕</span>
+        </div>
+        <div class="mapping-row">
+          <span class="mapping-label">Cipher</span>
+          <div class="mapping-letters" id="cipherRow" aria-label="Cipher alphabet letters"></div>
+        </div>
+        <p class="mapping-info" id="mappingInfo">Hover or tap a letter to highlight its ROT13 pair.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Test Cases ===== -->
+  <section class="section section-alt" id="tests">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Built-in Test Cases</h2>
+        <p class="section-desc">Verify the correctness of the ROT13 implementation with pre-defined test cases.</p>
+      </div>
+
+      <div class="card">
+        <div class="test-toolbar">
+          <button class="btn btn-primary" id="runTestsBtn" aria-label="Run all test cases">
+            <span class="btn-icon">▶</span> Run All Tests
+          </button>
+          <div class="test-summary" id="testSummary" aria-live="polite"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="test-table" id="testTable" aria-label="Test case results">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Input</th>
+                <th>Expected</th>
+                <th>Actual</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="testBody">
+              <!-- rows injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Educational Information ===== -->
+  <section class="section" id="learn">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Understanding ROT13</h2>
+        <p class="section-desc">Learn the theory behind this classical cipher and its place in cryptography.</p>
+      </div>
+
+      <div class="info-grid">
+        <!-- Card 1 -->
+        <div class="card info-card">
+          <div class="info-icon">🔐</div>
+          <h3>What Is Cryptography?</h3>
+          <p>Cryptography is the science of securing information by transforming it into an unreadable format. Only
+            authorised parties who possess the correct key can reverse the process and read the original message. It is
+            the backbone of digital security, protecting everything from online banking to private messaging.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card info-card">
+          <div class="info-icon">🔤</div>
+          <h3>Substitution Ciphers</h3>
+          <p>A substitution cipher replaces each letter of the plaintext with a different letter according to a fixed
+            rule. The Caesar Cipher, one of the oldest known ciphers, shifts every letter by a chosen number of
+            positions. ROT13 is a special case of the Caesar Cipher with a fixed shift of 13.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card info-card">
+          <div class="info-icon">🔄</div>
+          <h3>What Does ROT13 Mean?</h3>
+          <p><strong>ROT13</strong> stands for <em>"rotate by 13 places."</em> Because the English alphabet has 26
+            letters, shifting by 13 means the same operation reverses itself: encrypting an already-encrypted message
+            returns the original plaintext. This self-inverse property makes ROT13 unique among Caesar shifts.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card info-card">
+          <div class="info-icon">⚙️</div>
+          <h3>The Algorithm</h3>
+          <p>For each letter in the input, compute its zero-indexed position <code>x</code> (A = 0, B = 1, … , Z = 25).
+            Apply the formula:</p>
+          <div class="formula-block">E(x) = (x + 13) mod 26</div>
+          <p>Convert the result back to a letter. Non-alphabetic characters (spaces, digits, punctuation) pass through
+            unchanged.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card info-card">
+          <div class="info-icon">🪞</div>
+          <h3>Why One Function Does Both</h3>
+          <p>Applying ROT13 twice is the same as shifting by 26, which is a full rotation of the alphabet — bringing
+            every letter back to its starting position. Mathematically:
+            <code>(x + 13 + 13) mod 26 = (x + 26) mod 26 = x</code>. Therefore the same function encrypts <em>and</em>
+            decrypts.
+          </p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card info-card">
+          <div class="info-icon">⚠️</div>
+          <h3>Security Limitations</h3>
+          <p>ROT13 provides <strong>no real security</strong>. It uses a fixed, publicly known key, has no
+            authentication, and can be broken by simple frequency analysis or brute force (there is only one possible
+            key). It is valuable as an educational tool, but must <strong>never</strong> be used to protect confidential
+            data.</p>
+        </div>
+      </div>
+
+      <div class="security-warning">
+        <strong>⚠️ Important:</strong> ROT13 is a classical educational cipher and must <em>not</em> be used for
+        real-world security or protecting sensitive information.
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
